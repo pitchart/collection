@@ -65,6 +65,27 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, Collection::from($items)->map($callback)->toArray());
     }
 
+    public function testMapingKeepsImmutability() {
+        $items = [1, 2, 3];
+        $collection = Collection::from($items);
+        $collection->map(function($item) { return $item + 1;});
+        $this->assertEquals($items, $collection->toArray());
+    }
+
+    public function testFilteringKeepsImmutability() {
+        $items = [1, 2, 3, 4];
+        $collection = Collection::from($items);
+        $collection->filter(function($item) { return $item % 2 == 0;});
+        $this->assertEquals($items, $collection->toArray());
+    }
+
+    public function testReducingKeepsImmutability() {
+        $items = [1, 2, 3, 4];
+        $collection = Collection::from($items);
+        $collection->reduce(function($accumulator, $item) { return $item + $accumulator;}, 0);
+        $this->assertEquals($items, $collection->toArray());
+    }
+
     public function countTestProvider() {
         return [
             'An empty array' => [[], 0],
