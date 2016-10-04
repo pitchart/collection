@@ -34,31 +34,34 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $items
-     * @param callback $reducer
+     * @param callable $reducer
      * @param mixed $initial
      * @param mixed $expected
      * @dataProvider reduceTestProvider
      */
-    public function testCanBeReduced($items, $reducer, $initial, $expected) {
+    public function testCanBeReduced(array $items, callable $reducer, $initial, $expected) {
         $collection = new Collection($items);
         $this->assertEquals($expected, $collection->reduce($reducer, $initial));
     }
 
     /**
      * @param array $items
-     * @param callback $callback
-     * @param mixed $expected
+     * @param callable $callback
+     * @param array $expected
      * @dataProvider filterTestProvider
      */
-    public function testCanBeFiltered($items, $callback, $expected) {
+    public function testCanBeFiltered(array $items, callable $callback, array $expected) {
         $collection = new Collection($items);
         $this->assertEquals($expected, array_values($collection->filter($callback)->toArray()));
     }
 
     /**
+     * @param array $items
+     * @param callable $callback
+     * @param array $expected
      * @dataProvider mapTestProvider
      */
-    public function testCanMapDatas(array $items, $callback, array $expected) {
+    public function testCanMapDatas(array $items, callable $callback, array $expected) {
         $this->assertEquals($expected, Collection::from($items)->map($callback)->toArray());
     }
 
