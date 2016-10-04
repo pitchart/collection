@@ -1,0 +1,23 @@
+{
+    "name": "pitchart/collection",
+    "description": "Collection library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Julien VITTE",
+            "email": "vitte.julien@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Pitchart\\Collection\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pitchart\\Collection\\Test\\": "tests/"
+        }
+    }
+
+}
