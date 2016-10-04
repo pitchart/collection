@@ -6,7 +6,7 @@ class Collection implements \ArrayAccess, \Countable {
 
 	protected $items;
 
-	public function __construct(array items)
+	public function __construct(array $items)
 	{
 		$this->items = $items;
 	}
@@ -62,7 +62,7 @@ class Collection implements \ArrayAccess, \Countable {
 	{
 		if ($offset === null) {
 			$this->items[] = $value;
-		} 
+		}
 		else {
 			$this->items[$offset] = $value;
 		}
@@ -83,5 +83,5 @@ class Collection implements \ArrayAccess, \Countable {
 		return $this->items;
 	}
 
-	
+
 }
