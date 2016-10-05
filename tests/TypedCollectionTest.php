@@ -33,5 +33,18 @@ class TypedCollectionTest extends \PHPUnit_Framework_TestCase
         $collection = new TypedCollection(array(new \stdClass(), new \DateTime()), 'stdClass');
     }
 
+    public function testCanAddAnItemOfDefinedType() {
+        $collection = new TypedCollection(array(), \DateTime::class);
+        $date = new \DateTime;
+        $collection->add($date);
+        $this->assertContains($date, $collection->toArray());
+    }
+
+    public function testThrowsAnExceptionWhenAddAnItemOfAnotherType() {
+        $this->expectException(\InvalidArgumentException::class);
+        $collection = new TypedCollection(array(), \DateTime::class);
+        $item = new \stdClass();
+        $collection->add($item);
+    }
 
 }

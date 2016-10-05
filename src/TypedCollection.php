@@ -39,6 +39,12 @@ class TypedCollection extends Collection
         return $this;
     }
 
+    public function add($item) {
+        $validator = self::validateItem($this->itemType);
+        $validator($item);
+        $this->items[] = $item;
+    }
+
     /**
      * @param array $items
      * @param string $itemType
