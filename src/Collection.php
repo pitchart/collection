@@ -70,6 +70,26 @@ class Collection extends \ArrayObject {
 	}
 
 	/**
+	 * @param int $offset
+	 * @param int $length
+	 * @param bool $preserveKeys
+	 * @return static
+	 */
+	public function slice($offset, $length = null, $preserveKeys = false) {
+		return new static(array_slice($this->getArrayCopy(), $offset, $length, $preserveKeys))
+	}
+
+	/**
+	 * @param int $offset
+	 * @param int $length
+	 * @param bool $preserveKeys
+	 * @return static
+	 */
+	public function take($length, $preserveKeys = false) {
+		return $this->slice(0, $length, $preserveKeys);
+	}
+
+	/**
 	 * @param callable $callback
 	 * @param mixed $initial
 	 * @return mixed
