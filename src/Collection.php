@@ -97,6 +97,16 @@ class Collection extends \ArrayObject {
 		return $this->slice(0, $length, $preserveKeys);
 	}
 
+	public function difference(self $collection)
+	{
+		return new static(array_diff($this->toArray(), $collection->toArray()));
+	}
+
+	public function intersection(self $collection)
+	{
+		return new static(array_intersect($this->toArray(), $collection->toArray()));
+	}
+
 	/**
 	 * @param callable $callback
 	 * @param mixed $initial
