@@ -42,7 +42,7 @@ class TypedCollection extends Collection
     public function add($item) {
         $validator = self::validateItem($this->itemType);
         $validator($item);
-        $this->items[] = $item;
+        $this->append($item);
     }
 
     /**
