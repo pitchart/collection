@@ -70,13 +70,21 @@ class Collection extends \ArrayObject {
 	}
 
 	/**
+	 * @param callable $callback
+	 * @return static
+	 */
+	public function sort(callable $callable) {
+		return new static($this->uasort($callable)->toArray());
+	}
+
+	/**
 	 * @param int $offset
 	 * @param int $length
 	 * @param bool $preserveKeys
 	 * @return static
 	 */
 	public function slice($offset, $length = null, $preserveKeys = false) {
-		return new static(array_slice($this->getArrayCopy(), $offset, $length, $preserveKeys))
+		return new static(array_slice($this->getArrayCopy(), $offset, $length, $preserveKeys));
 	}
 
 	/**
