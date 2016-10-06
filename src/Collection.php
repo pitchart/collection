@@ -14,6 +14,14 @@ class Collection extends \ArrayObject {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return $this->getArrayCopy();
+	}
+
+	/**
 	 * @param callable $callback
 	 */
 	public function each(callable $callback)
@@ -42,6 +50,17 @@ class Collection extends \ArrayObject {
 	}
 
 	/**
+	 * Alias for filter()
+	 * @see filter()
+	 *
+	 * @param callable $callback
+	 * @return static
+	 */
+	public function select(callable $callback) {
+		return self::filter($callback);
+	}
+
+	/**
 	 * @param callable $callback
 	 * @return static
 	 */
@@ -63,14 +82,6 @@ class Collection extends \ArrayObject {
 			$accumulator = $callback($accumulator, $item);
 		}
 		return $accumulator;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function toArray()
-	{
-		return $this->getArrayCopy();
 	}
 
 }

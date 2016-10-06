@@ -53,6 +53,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeFiltered(array $items, callable $callback, array $expected) {
         $collection = new Collection($items);
         $this->assertEquals($expected, array_values($collection->filter($callback)->toArray()));
+        // test the alias
+        $this->assertEquals($expected, array_values($collection->select($callback)->toArray()));
     }
 
     /**
