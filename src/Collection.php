@@ -104,11 +104,19 @@ class Collection extends \ArrayObject
         return $this->slice(0, $length, $preserveKeys);
     }
 
+	/**
+	 * @param Collection $collection
+	 * @return static
+	 */
     public function difference(self $collection)
     {
         return new static(array_diff($this->toArray(), $collection->toArray()));
     }
 
+	/**
+	 * @param Collection $collection
+	 * @return static
+	 */
     public function intersection(self $collection)
     {
         return new static(array_intersect($this->toArray(), $collection->toArray()));
