@@ -99,7 +99,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             'select' => [[1, 2, 3, 4], 'select', [function($item) { return $item % 2 == 0;}]],
             'reject' => [[1, 2, 3, 4], 'reject', [function($item) { return $item % 2 == 0;}]],
             'reduce' => [[1, 2, 3, 4], 'reduce', [function($accumulator, $item) { return $item + $accumulator;}, 0]],
-
+            'sort' => [[1, 2, 3, 4], 'sort', [function($first, $second) {return ($first == $second ? 0 : ($first < $second ? -1 : 1)); }]],
+            'slice' => [[1, 2, 3, 4], 'slice', [1, 2, false]],
+            'slice preserving keys' => [[1, 2, 3, 4], 'slice', [1, 2, true]],
+            'take' => [[1, 2, 3, 4], 'slice', [3, false]],
+            'take preserving keys' => [[1, 2, 3, 4], 'slice', [3, true]],
+            'difference' => [[1, 2, 3, 4], 'difference', [new Collection([3, 4])]],
+            'intersection' => [[1, 2, 3, 4], 'intersection', [new Collection([3, 4])]],
+            'merge' => [[1, 2, 3, 4], 'merge', [new Collection([3, 4])]],
         ];
     }
 
