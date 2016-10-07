@@ -61,6 +61,17 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      * @param array $items
      * @param callable $callback
      * @param array $expected
+     * @dataProvider rejectTestProvider
+     */
+    public function testCanBeRejected(array $items, callable $callback, array $expected) {
+        $collection = new Collection($items);
+        $this->assertEquals($expected, array_values($collection->reject($callback)->toArray()));
+    }
+
+    /**
+     * @param array $items
+     * @param callable $callback
+     * @param array $expected
      * @dataProvider mapTestProvider
      */
     public function testCanMapDatas(array $items, callable $callback, array $expected) {

@@ -68,7 +68,7 @@ class Collection extends \ArrayObject
      */
     public function reject(callable $callback)
     {
-        return new static(array_filter($this->getArrayCopy(), !$callback));
+        return new static(array_filter($this->getArrayCopy(), function($item) use($callback) {return !$callback($item);}));
     }
 
     /**
