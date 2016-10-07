@@ -78,25 +78,29 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, Collection::from($items)->map($callback)->toArray());
     }
 
-    public function testMapingKeepsImmutability() {
-        $items = [1, 2, 3];
+    /**
+     * Test that transformation methods keeps the collection immutable
+     *
+     * @param array $items
+     * @param $func
+     * @param callable $callback
+     * @dataProvider immutabilityTestProvider
+     */
+    public function testMethodsKeepImmutability(array $items, $func, array $params) {
         $collection = Collection::from($items);
-        $collection->map(function($item) { return $item + 1;});
+        call_user_func_array(array($collection, $func), $params);
         $this->assertEquals($items, $collection->toArray());
     }
 
-    public function testFilteringKeepsImmutability() {
-        $items = [1, 2, 3, 4];
-        $collection = Collection::from($items);
-        $collection->filter(function($item) { return $item % 2 == 0;});
-        $this->assertEquals($items, $collection->toArray());
-    }
+    public function immutabilityTestProvider() {
+        return [
+            'map' => [[1, 2, 3, 4], 'map', [function($item) { return $item + 1; }]],
+            'filter' => [[1, 2, 3, 4], 'filter', [function($item) { return $item % 2 == 0;}]],
+            'select' => [[1, 2, 3, 4], 'select', [function($item) { return $item % 2 == 0;}]],
+            'reject' => [[1, 2, 3, 4], 'reject', [function($item) { return $item % 2 == 0;}]],
+            'reduce' => [[1, 2, 3, 4], 'reduce', [function($accumulator, $item) { return $item + $accumulator;}, 0]],
 
-    public function testReducingKeepsImmutability() {
-        $items = [1, 2, 3, 4];
-        $collection = Collection::from($items);
-        $collection->reduce(function($accumulator, $item) { return $item + $accumulator;}, 0);
-        $this->assertEquals($items, $collection->toArray());
+        ];
     }
 
     public function countTestProvider() {
@@ -125,7 +129,13 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         return [
             'Pair filter' => [[1,2,3, 4], function($item) {return $item % 2 == 0;}, [2, 4]],
             'String filter' => [['foo', 'bar', 'fizz', 'buzz'], function($item) { return strpos($item, 'f') !== false;}, ['foo', 'fizz']],
-            'Empty data mapper' => [[], function($item) { return $item + 1;}, []],
+        ];
+    }
+
+    public function rejectTestProvider() {
+        return [
+            'Pair filter' => [[1,2,3, 4], function($item) {return $item % 2 == 0;}, [1, 3]],
+            'String filter' => [['foo', 'bar', 'fizz', 'buzz'], function($item) { return strpos($item, 'f') !== false;}, ['bar', 'buzz']],
         ];
     }
 
