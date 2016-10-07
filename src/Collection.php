@@ -77,7 +77,9 @@ class Collection extends \ArrayObject
      */
     public function sort(callable $callable)
     {
-        return new static($this->uasort($callable)->toArray());
+        $static = new static($this->toArray());
+        $static->uasort($callable);
+        return $static;
     }
 
     /**
