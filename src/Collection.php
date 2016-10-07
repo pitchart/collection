@@ -123,6 +123,15 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * @param Collection $collection
+     * @return static
+     */
+    public function merge(self $collection)
+    {
+        return new static(array_merge($this->toArray(), $collection->toArray()));
+    }
+
+    /**
      * @param callable $callback
      * @param mixed $initial
      * @return mixed
