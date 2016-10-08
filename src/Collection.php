@@ -29,7 +29,8 @@ class Collection extends \ArrayObject
      * @return array
      * @see getArrayCopy
      */
-    public function values() {
+    public function values()
+    {
         return $this->getArrayCopy();
     }
 
@@ -81,7 +82,9 @@ class Collection extends \ArrayObject
      */
     public function reject(callable $callback)
     {
-        return new static(array_filter($this->getArrayCopy(), function($item) use($callback) {return !$callback($item);}));
+        return new static(array_filter($this->getArrayCopy(), function ($item) use ($callback) {
+            return !$callback($item);
+        }));
     }
 
     /**
@@ -117,19 +120,19 @@ class Collection extends \ArrayObject
         return $this->slice(0, $length, $preserveKeys);
     }
 
-	/**
-	 * @param Collection $collection
-	 * @return static
-	 */
+    /**
+     * @param Collection $collection
+     * @return static
+     */
     public function difference(self $collection)
     {
         return new static(array_diff($this->values(), $collection->values()));
     }
 
-	/**
-	 * @param Collection $collection
-	 * @return static
-	 */
+    /**
+     * @param Collection $collection
+     * @return static
+     */
     public function intersection(self $collection)
     {
         return new static(array_intersect($this->values(), $collection->values()));
@@ -170,11 +173,12 @@ class Collection extends \ArrayObject
 
     /**
      * Concatenates collections into a single collection
-     * 
+     *
      * @return static
      */
-    public function concat() {
-        return $this->reduce(function(Collection $accumulator, $item) {
+    public function concat()
+    {
+        return $this->reduce(function (Collection $accumulator, $item) {
             if ($item instanceof Collection) {
                 $accumulator = $accumulator->merge($item);
             }
