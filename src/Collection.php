@@ -167,6 +167,24 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Concatenates collections into a single collection
+     * 
+     * @return static
+     */
+    public function concat() {
+        $results = [];
+        foreach ($this->values() as $values) {
+            if ($values instanceof Collection) {
+                $values = $values->values();
+            } elseif (! is_array($values)) {
+                continue;
+            }
+            $results = array_merge($results, $values);
+        }
+        return new static($results);
+    }
+
+    /**
      * @param callable $callback
      * @param mixed $initial
      * @return mixed

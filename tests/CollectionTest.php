@@ -102,6 +102,19 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($testItem2, $grouped->offsetGet(0));
     }
 
+    public function testCanCollapseCollectionOfCollections() {
+        $items = [
+            Collection::from([1, 2, 3]),
+            Collection::from([4, 5, 6]),
+        ];
+
+        $expected = [1, 2, 3, 4, 5, 6];
+
+        $collection = Collection::from($items)->concat();
+
+        $this->assertEquals($expected, $collection->values());
+    }
+
     /**
      * Test that transformation methods keeps the collection immutable
      *
