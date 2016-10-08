@@ -132,6 +132,30 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Group a collection using a callable
+     */
+    public function groupBy(callable $groupBy, $preserveKeys = false)
+    {
+        $results = [];
+        foreach ($this->toArray() as $key => $value) {
+            $groupKeys = $groupBy($value, $key);
+            if (! is_array($groupKeys)) {
+                $groupKeys = [$groupKeys];
+            }
+            foreach ($groupKeys as $groupKey) {
+                if (!in_array(gettype($groupKey), ['string', 'int'])) {
+                    $groupKey = (int) $groupKey;
+                }
+                if (! array_key_exists($groupKey, $results)) {
+                    $results[$groupKey] = new static;
+                }
+                $results[$groupKey]->offsetSet($preserveKeys ? $key : null, $value);
+            }
+        }
+        return new static($results);
+    }
+
+    /**
      * @param callable $callback
      * @param mixed $initial
      * @return mixed

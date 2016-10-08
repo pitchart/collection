@@ -78,6 +78,30 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, Collection::from($items)->map($callback)->toArray());
     }
 
+    public function testCanGroupItems() {
+        $testItem1 = (object) ['name' => 'bar', 'age' => 20];
+        $testItem2 = (object) ['name' => 'fizz', 'age' => 30];
+        $items = [
+            (object) ['name' => 'foo', 'age' => 10],
+            $testItem1,
+            (object) ['name' => 'baz', 'age' => 25],
+            $testItem2,
+            (object) ['name' => 'buzz', 'age' => 40],
+        ];
+        $collection = Collection::from($items);
+        $grouped = $collection->groupBy(function($item) {return $item->age <= 25;});
+
+        // Grouped Collection only contains instances of Collection
+        foreach ($grouped as $group) {
+            $this->assertInstanceOf(Collection::class, $group);
+        }
+        // Group by a boolean function returns 2 groups
+        $this->assertEquals(2, $grouped->count());
+        // Test items distribution
+        $this->assertContains($testItem1, $grouped->offsetGet(1));
+        $this->assertContains($testItem2, $grouped->offsetGet(0));
+    }
+
     /**
      * Test that transformation methods keeps the collection immutable
      *
