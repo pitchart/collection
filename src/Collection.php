@@ -47,6 +47,8 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Map a function over a collection
+     *
      * @param callable $callback
      * @return static
      */
@@ -184,6 +186,27 @@ class Collection extends \ArrayObject
             }
             return $accumulator;
         }, new static([]));
+    }
+
+    /**
+     * Map a function over a collection and flatten the result by one-level
+     *
+     * @param callback $callback
+     * @return static
+     */
+    public function flatMap(callback $callback)
+    {
+        return $this->map($callback)->concat();
+    }
+
+    /**
+     * Alias for flatMap()
+     *
+     * @see flatMap
+     */
+    public function mapcat(callback $callback)
+    {
+        return $this->flatMap($callback);
     }
 
     /**
