@@ -172,16 +172,12 @@ class Collection extends \ArrayObject
      * @return static
      */
     public function concat() {
-        $results = [];
-        foreach ($this->values() as $values) {
-            if ($values instanceof Collection) {
-                $values = $values->values();
-            } elseif (! is_array($values)) {
-                continue;
+        return $this->reduce(function(Collection $accumulator, $item) {
+            if ($item instanceof Collection) {
+                $accumulator = $accumulator->merge($item);
             }
-            $results = array_merge($results, $values);
-        }
-        return new static($results);
+            return $accumulator;
+        }, new static([]));
     }
 
     /**
