@@ -103,7 +103,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             'sort' => [[1, 2, 3, 4], 'sort', [function($first, $second) {return ($first == $second ? 0 : ($first < $second ? -1 : 1)); }]],
             'slice' => [[1, 2, 3, 4], 'slice', [1, 2, false]],
             'slice preserving keys' => [[1, 2, 3, 4], 'slice', [1, 2, true]],
-            'take' => [[1, 2, 3, 4], 'slice', [3, false]],
+            'take' => [[1, 2, 3, 4], 'take', [3, false]],
             'take preserving keys' => [[1, 2, 3, 4], 'slice', [3, true]],
             'difference' => [[1, 2, 3, 4], 'difference', [new Collection([3, 4])]],
             'intersection' => [[1, 2, 3, 4], 'intersection', [new Collection([3, 4])]],
