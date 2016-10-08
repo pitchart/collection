@@ -15,7 +15,9 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Alias for getArrayCopy()
      * @return array
+     * @see getArrayCopy
      */
     public function toArray()
     {
@@ -23,12 +25,12 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Alias for toArray()
+     * Alias for getArrayCopy()
      * @return array
-     * @see toArray
+     * @see getArrayCopy
      */
     public function values() {
-        return $this->toArray();
+        return $this->getArrayCopy();
     }
 
     /**
@@ -88,7 +90,7 @@ class Collection extends \ArrayObject
      */
     public function sort(callable $callable)
     {
-        $static = new static($this->toArray());
+        $static = new static($this->values());
         $static->uasort($callable);
         return $static;
     }
@@ -121,7 +123,7 @@ class Collection extends \ArrayObject
 	 */
     public function difference(self $collection)
     {
-        return new static(array_diff($this->toArray(), $collection->toArray()));
+        return new static(array_diff($this->values(), $collection->values()));
     }
 
 	/**
@@ -130,7 +132,7 @@ class Collection extends \ArrayObject
 	 */
     public function intersection(self $collection)
     {
-        return new static(array_intersect($this->toArray(), $collection->toArray()));
+        return new static(array_intersect($this->values(), $collection->values()));
     }
 
     /**
@@ -139,7 +141,7 @@ class Collection extends \ArrayObject
      */
     public function merge(self $collection)
     {
-        return new static(array_merge($this->toArray(), $collection->toArray()));
+        return new static(array_merge($this->values(), $collection->values()));
     }
 
     /**
@@ -148,7 +150,7 @@ class Collection extends \ArrayObject
     public function groupBy(callable $groupBy, $preserveKeys = false)
     {
         $results = [];
-        foreach ($this->toArray() as $key => $value) {
+        foreach ($this->values() as $key => $value) {
             $groupKeys = $groupBy($value, $key);
             if (! is_array($groupKeys)) {
                 $groupKeys = [$groupKeys];
