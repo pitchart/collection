@@ -102,6 +102,12 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($testItem2, $grouped->offsetGet(0));
     }
 
+    public function testCanMergeCollections() {
+        $collection = new Collection([1, 2, 3]);
+        $merged = $collection->merge(Collection::from([4, 5, 6]));
+        $this->assertEquals([1, 2, 3, 4, 5, 6], $merged->values());
+    }
+
     public function testCanCollapseCollectionOfCollections() {
         $items = [
             Collection::from([1, 2, 3]),
