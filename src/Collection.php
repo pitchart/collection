@@ -23,6 +23,17 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Alias for toArray()
+     * @return array
+     * @see toArray
+     */
+    public function values() {
+        return $this->toArray();
+    }
+
+    /**
+     * Execute a callback function on each item
+     *
      * @param callable $callback
      */
     public function each(callable $callback)
