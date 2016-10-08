@@ -1,6 +1,6 @@
 <?php
 
-namespace Pitchart\Collection\Test;
+namespace Pitchart\Collection\Test\Unit;
 
 
 use Pitchart\Collection\Collection;
