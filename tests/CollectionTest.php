@@ -94,6 +94,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     public function immutabilityTestProvider() {
         return [
+            'each' => [[1, 2, 3, 4], 'each', [function($item) { return $item + 1; }]],
             'map' => [[1, 2, 3, 4], 'map', [function($item) { return $item + 1; }]],
             'filter' => [[1, 2, 3, 4], 'filter', [function($item) { return $item % 2 == 0;}]],
             'select' => [[1, 2, 3, 4], 'select', [function($item) { return $item % 2 == 0;}]],
