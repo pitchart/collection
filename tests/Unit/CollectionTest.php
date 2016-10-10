@@ -151,6 +151,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             'difference' => [[1, 2, 3, 4], 'difference', [new Collection([3, 4])]],
             'intersection' => [[1, 2, 3, 4], 'intersection', [new Collection([3, 4])]],
             'merge' => [[1, 2, 3, 4], 'merge', [new Collection([3, 4])]],
+            'flatMap' => [[1, 2, 3, 4], 'flatMap', [function($item) { return Collection::from([$item, $item + 1]);}]],
+            'mapcat' => [[1, 2, 3, 4], 'mapcat', [function($item) { return Collection::from([$item, $item + 1]);}]],
         ];
     }
 
