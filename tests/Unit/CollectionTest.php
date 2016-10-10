@@ -32,6 +32,22 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($numberOfItems, $collection->count());
     }
 
+    public function testCanIterateItems() {
+        $collection = Collection::from([1, 2, 3, 4]);
+        $mock = $this->getMockBuilder(stdClass::class)
+                     ->setMethods(['test'])
+                     ->getMock();
+
+        $mock->expects($this->exactly(4))
+            ->method('test')
+        ;
+        $function = function($item) use ($mock) {
+            $mock->test($item);
+        };
+
+        $collection->each($function);
+    }
+
     /**
      * @param array $items
      * @param callable $reducer
@@ -132,6 +148,37 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testCanSortItems() {
+        $sorted = Collection::from([3, 1, 2, 4])->sort(function($first, $second) {return ($first == $second ? 0 : ($first < $second ? -1 : 1)); });
+        $this->assertEquals([1, 2, 3, 4], $sorted->values());
+    }
+
+    public function testCanExtractParts() {
+        $sliced = Collection::from([1, 2, 3, 4])->slice(1, 2);
+        $this->assertEquals([2, 3], $sliced->values());
+    }
+
+    public function testCanExtratNthFirstItems() {
+        $firsts = Collection::from([1, 2, 3, 4])->take(3);
+        $this->assertEquals([1, 2, 3], $firsts->values());
+    }
+
+    public function testCanRemoveItemsFromAnotherCollection() {
+        $difference = Collection::from([1, 2, 3, 4])->difference(new Collection([2, 3]));
+        $this->assertEquals([1, 4], $difference->values());
+    }
+
+    public function testCanRetainItemsAlsoInAnotherCollection() {
+        $intersection = Collection::from([1, 2, 3, 4])->intersection(new Collection([2, 3]));
+        $this->assertEquals([2, 3], $intersection->values());
+    }
+
+    public function testCanFlattenElementsAfterAMapping() {
+        $flatMap = Collection::from([1, 2, 3, 4])->flatMap(function($item) { return Collection::from([$item, $item + 1]);});
+        $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
+        $flatMap = Collection::from([1, 2, 3, 4])->mapcat(function($item) { return Collection::from([$item, $item + 1]);});
+        $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
+    }
     /**
      * Test that transformation methods keeps the collection immutable
      *
@@ -140,6 +187,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      * @param callable $callback
      * @dataProvider immutabilityTestProvider
      */
+
     public function testMethodsKeepImmutability(array $items, $func, array $params) {
         $collection = Collection::from($items);
         call_user_func_array(array($collection, $func), $params);
