@@ -90,6 +90,15 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Remove duplicate elements
+     *
+     * @return static
+     */
+    public function distinct() {
+        return new static(array_unique($this->values()));
+    }
+
+    /**
      * 
      * @param \Closure $function
      * @return static

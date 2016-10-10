@@ -121,6 +121,17 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $collection->values());
     }
 
+    public function testCanRemoveDuplicates() {
+        $items = [1, 6, 3, 4, 3, 5, 5, 3, 2, 1];
+        $collection = Collection::from($items)->distinct();
+
+        foreach ($collection->values() as $key => $value) {
+            $datas = $collection->values();
+            unset($datas[$key]);
+            $this->assertNotContains($value, $datas);
+        }
+    }
+
     /**
      * Test that transformation methods keeps the collection immutable
      *
