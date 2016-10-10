@@ -37,66 +37,67 @@ class Collection extends \ArrayObject
     /**
      * Execute a callback function on each item
      *
-     * @param callable $callback
+     * @param \Closure $function
      */
-    public function each(callable $callback)
+    public function each(\Closure $function)
     {
         foreach ($this->getArrayCopy() as $item) {
-            $callback($item);
+            $function($item);
         }
     }
 
     /**
      * Map a function over a collection
      *
-     * @param callable $callback
+     * @param \Closure $function
      * @return static
      */
-    public function map(callable $callback)
+    public function map(\Closure $function)
     {
-        return new static(array_map($callback, $this->getArrayCopy()));
+        return new static(array_map($function, $this->getArrayCopy()));
     }
 
     /**
-     * @param callable $callback
+     * @param \Closure $function
      * @return static
      */
-    public function filter(callable $callback)
+    public function filter(\Closure $function)
     {
-        return new static(array_filter($this->getArrayCopy(), $callback));
+        return new static(array_filter($this->getArrayCopy(), $function));
     }
 
     /**
      * Alias for filter()
      * @see filter()
      *
-     * @param callable $callback
+     * @param \Closure $function
      * @return static
      */
-    public function select(callable $callback)
+    public function select(\Closure $function)
     {
-        return self::filter($callback);
+        return self::filter($function);
     }
 
     /**
-     * @param callable $callback
+     * @param \Closure $function
      * @return static
      */
-    public function reject(callable $callback)
+    public function reject(\Closure $function)
     {
-        return new static(array_filter($this->getArrayCopy(), function ($item) use ($callback) {
-            return !$callback($item);
+        return new static(array_filter($this->getArrayCopy(), function ($item) use ($function) {
+            return !$function($item);
         }));
     }
 
     /**
-     * @param callable $callback
+     * 
+     * @param \Closure $function
      * @return static
      */
-    public function sort(callable $callable)
+    public function sort(\Closure $function)
     {
         $static = new static($this->values());
-        $static->uasort($callable);
+        $static->uasort($function);
         return $static;
     }
 
@@ -150,9 +151,9 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Group a collection using a callable
+     * Group a collection using a \Closure
      */
-    public function groupBy(callable $groupBy, $preserveKeys = false)
+    public function groupBy(\Closure $groupBy, $preserveKeys = false)
     {
         $results = [];
         foreach ($this->values() as $key => $value) {
@@ -191,12 +192,12 @@ class Collection extends \ArrayObject
     /**
      * Map a function over a collection and flatten the result by one-level
      *
-     * @param callback $callback
+     * @param \Closure $function
      * @return static
      */
-    public function flatMap(callable $callback)
+    public function flatMap(\Closure $function)
     {
-        return $this->map($callback)->concat();
+        return $this->map($function)->concat();
     }
 
     /**
@@ -204,22 +205,22 @@ class Collection extends \ArrayObject
      *
      * @see flatMap
      */
-    public function mapcat(callable $callback)
+    public function mapcat(\Closure $function)
     {
-        return $this->flatMap($callback);
+        return $this->flatMap($function);
     }
 
     /**
-     * @param callable $callback
+     * @param \Closure $function
      * @param mixed $initial
      * @return mixed
      */
-    public function reduce(callable $callback, $initial)
+    public function reduce(\Closure $function, $initial)
     {
         $accumulator = $initial;
 
         foreach ($this->getArrayCopy() as $item) {
-            $accumulator = $callback($accumulator, $item);
+            $accumulator = $function($accumulator, $item);
         }
         return $accumulator;
     }
