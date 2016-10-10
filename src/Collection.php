@@ -194,7 +194,7 @@ class Collection extends \ArrayObject
      * @param callback $callback
      * @return static
      */
-    public function flatMap(callback $callback)
+    public function flatMap(callable $callback)
     {
         return $this->map($callback)->concat();
     }
@@ -204,7 +204,7 @@ class Collection extends \ArrayObject
      *
      * @see flatMap
      */
-    public function mapcat(callback $callback)
+    public function mapcat(callable $callback)
     {
         return $this->flatMap($callback);
     }
