@@ -105,9 +105,9 @@ class Collection extends \ArrayObject
      */
     public function sort(\Closure $function)
     {
-        $static = new static($this->values());
-        $static->uasort($function);
-        return $static;
+        $sorted = $this->values();
+        usort($sorted, $function);
+        return new static($sorted);
     }
 
     /**
@@ -138,7 +138,7 @@ class Collection extends \ArrayObject
      */
     public function difference(self $collection)
     {
-        return new static(array_diff($this->values(), $collection->values()));
+        return new static(array_values(array_diff($this->values(), $collection->values())));
     }
 
     /**
@@ -147,7 +147,7 @@ class Collection extends \ArrayObject
      */
     public function intersection(self $collection)
     {
-        return new static(array_intersect($this->values(), $collection->values()));
+        return new static(array_values(array_intersect($this->values(), $collection->values())));
     }
 
     /**
