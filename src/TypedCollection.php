@@ -46,15 +46,17 @@ class TypedCollection extends Collection
     }
 
     /**
-     * @param array $items
+     * @param array  $items
      * @param string $itemType
      */
     protected static function validateItems(array $items, $itemType)
     {
         $validateItem = static::validateItem($itemType);
-        array_map(function ($item) use ($validateItem) {
-            $validateItem($item);
-        }, $items);
+        array_map(
+            function ($item) use ($validateItem) {
+                $validateItem($item);
+            }, $items
+        );
     }
 
     protected static function validateItem($type)

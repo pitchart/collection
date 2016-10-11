@@ -16,8 +16,9 @@ class Collection extends \ArrayObject
 
     /**
      * Alias for getArrayCopy()
+     *
      * @return array
-     * @see getArrayCopy
+     * @see    getArrayCopy
      */
     public function toArray()
     {
@@ -26,8 +27,9 @@ class Collection extends \ArrayObject
 
     /**
      * Alias for getArrayCopy()
+     *
      * @return array
-     * @see getArrayCopy
+     * @see    getArrayCopy
      */
     public function values()
     {
@@ -49,7 +51,7 @@ class Collection extends \ArrayObject
     /**
      * Map a function over a collection
      *
-     * @param \Closure $function
+     * @param  \Closure $function
      * @return static
      */
     public function map(\Closure $function)
@@ -68,9 +70,10 @@ class Collection extends \ArrayObject
 
     /**
      * Alias for filter()
+     *
      * @see filter()
      *
-     * @param \Closure $function
+     * @param  \Closure $function
      * @return static
      */
     public function select(\Closure $function)
@@ -84,9 +87,11 @@ class Collection extends \ArrayObject
      */
     public function reject(\Closure $function)
     {
-        return new static(array_filter($this->getArrayCopy(), function ($item) use ($function) {
-            return !$function($item);
-        }));
+        return new static(array_filter(
+            $this->getArrayCopy(), function ($item) use ($function) {
+                return !$function($item);
+            }
+        ));
     }
 
     /**
@@ -94,7 +99,8 @@ class Collection extends \ArrayObject
      *
      * @return static
      */
-    public function distinct() {
+    public function distinct() 
+    {
         return new static(array_unique($this->values()));
     }
 
@@ -111,8 +117,8 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * @param int $offset
-     * @param int $length
+     * @param int  $offset
+     * @param int  $length
      * @param bool $preserveKeys
      * @return static
      */
@@ -122,8 +128,8 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * @param int $offset
-     * @param int $length
+     * @param int  $offset
+     * @param int  $length
      * @param bool $preserveKeys
      * @return static
      */
@@ -190,18 +196,20 @@ class Collection extends \ArrayObject
      */
     public function concat()
     {
-        return $this->reduce(function (Collection $accumulator, $item) {
-            if ($item instanceof Collection) {
-                $accumulator = $accumulator->merge($item);
-            }
-            return $accumulator;
-        }, new static([]));
+        return $this->reduce(
+            function (Collection $accumulator, $item) {
+                if ($item instanceof Collection) {
+                    $accumulator = $accumulator->merge($item);
+                }
+                return $accumulator;
+            }, new static([])
+        );
     }
 
     /**
      * Map a function over a collection and flatten the result by one-level
      *
-     * @param \Closure $function
+     * @param  \Closure $function
      * @return static
      */
     public function flatMap(\Closure $function)
@@ -221,7 +229,7 @@ class Collection extends \ArrayObject
 
     /**
      * @param \Closure $function
-     * @param mixed $initial
+     * @param mixed    $initial
      * @return mixed
      */
     public function reduce(\Closure $function, $initial)
