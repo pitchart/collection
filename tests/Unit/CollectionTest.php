@@ -179,6 +179,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $flatMap = Collection::from([1, 2, 3, 4])->mapcat(function($item) { return Collection::from([$item, $item + 1]);});
         $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
     }
+
     /**
      * Test that transformation methods keeps the collection immutable
      *
@@ -187,7 +188,6 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      * @param callable $callback
      * @dataProvider immutabilityTestProvider
      */
-
     public function testMethodsKeepImmutability(array $items, $func, array $params) {
         $collection = Collection::from($items);
         call_user_func_array(array($collection, $func), $params);
