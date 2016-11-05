@@ -88,7 +88,8 @@ class Collection extends \ArrayObject
     public function reject(\Closure $function)
     {
         return new static(array_filter(
-            $this->getArrayCopy(), function ($item) use ($function) {
+            $this->getArrayCopy(),
+            function ($item) use ($function) {
                 return !$function($item);
             }
         ));
@@ -99,13 +100,13 @@ class Collection extends \ArrayObject
      *
      * @return static
      */
-    public function distinct() 
+    public function distinct()
     {
         return new static(array_unique($this->values()));
     }
 
     /**
-     * 
+     *
      * @param \Closure $function
      * @return static
      */
@@ -202,7 +203,8 @@ class Collection extends \ArrayObject
                     $accumulator = $accumulator->merge($item);
                 }
                 return $accumulator;
-            }, new static([])
+            },
+            new static([])
         );
     }
 

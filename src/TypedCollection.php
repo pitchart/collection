@@ -55,7 +55,8 @@ class TypedCollection extends Collection
         array_map(
             function ($item) use ($validateItem) {
                 $validateItem($item);
-            }, $items
+            },
+            $items
         );
     }
 
