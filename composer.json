@@ -1,14 +1,18 @@
 {
     "name": "pitchart/collection",
-    "description": "Collection library",
+    "description": "A simple immutable collection library with functional capabilities",
     "type": "library",
+    "license" : "MIT",
+    "keywords": ["collection", "functional", "immutable"],
     "authors": [
         {
             "name": "Julien VITTE",
             "email": "vitte.julien@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=5.4.0"
+    },
     "autoload": {
         "psr-4": {
             "Pitchart\\Collection\\": "src/"
