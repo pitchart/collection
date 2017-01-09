@@ -39,33 +39,33 @@ class Collection extends \ArrayObject
     /**
      * Execute a callback function on each item
      *
-     * @param \Closure $function
+     * @param callable $callable
      */
-    public function each(\Closure $function)
+    public function each(callable $callable)
     {
         foreach ($this->getArrayCopy() as $item) {
-            $function($item);
+            $this->normalizeAsCallables($callable)($item);
         }
     }
 
     /**
      * Map a function over a collection
      *
-     * @param  \Closure $function
+     * @param  callable $callable
      * @return static
      */
-    public function map(\Closure $function)
+    public function map(callable $callable)
     {
-        return new static(array_map($function, $this->getArrayCopy()));
+        return new static(array_map($this->normalizeAsCallables($callable), $this->getArrayCopy()));
     }
 
     /**
-     * @param \Closure $function
+     * @param callable $callable
      * @return static
      */
-    public function filter(\Closure $function)
+    public function filter(callable $callable)
     {
-        return new static(array_filter($this->getArrayCopy(), $function));
+        return new static(array_filter($this->getArrayCopy(), $this->normalizeAsCallables($callable)));
     }
 
     /**
@@ -73,20 +73,21 @@ class Collection extends \ArrayObject
      *
      * @see filter()
      *
-     * @param  \Closure $function
+     * @param  callable $callable
      * @return static
      */
-    public function select(\Closure $function)
+    public function select(callable $callable)
     {
-        return self::filter($function);
+        return self::filter($callable);
     }
 
     /**
-     * @param \Closure $function
+     * @param callable $callable
      * @return static
      */
-    public function reject(\Closure $function)
+    public function reject(callable $callable)
     {
+        $function = $this->normalizeAsCallables($callable);
         return new static(array_filter(
             $this->getArrayCopy(),
             function ($item) use ($function) {
@@ -107,13 +108,13 @@ class Collection extends \ArrayObject
 
     /**
      *
-     * @param \Closure $function
+     * @param callable $callable
      * @return static
      */
-    public function sort(\Closure $function)
+    public function sort(callable $callable)
     {
         $sorted = $this->values();
-        usort($sorted, $function);
+        usort($sorted, $this->normalizeAsCallables($callable));
         return new static($sorted);
     }
 
@@ -211,12 +212,12 @@ class Collection extends \ArrayObject
     /**
      * Map a function over a collection and flatten the result by one-level
      *
-     * @param  \Closure $function
+     * @param  callable $callable
      * @return static
      */
-    public function flatMap(\Closure $function)
+    public function flatMap(callable $callable)
     {
-        return $this->map($function)->concat();
+        return $this->map($callable)->concat();
     }
 
     /**
@@ -224,23 +225,38 @@ class Collection extends \ArrayObject
      *
      * @see flatMap
      */
-    public function mapcat(\Closure $function)
+    public function mapcat(callable $callable)
     {
-        return $this->flatMap($function);
+        return $this->flatMap($callable);
     }
 
     /**
-     * @param \Closure $function
+     * @param callable $callable
      * @param mixed    $initial
      * @return mixed
      */
-    public function reduce(\Closure $function, $initial)
+    public function reduce(callable $callable, $initial)
     {
         $accumulator = $initial;
+        $function = $this->normalizeAsCallables($callable);
 
         foreach ($this->getArrayCopy() as $item) {
             $accumulator = $function($accumulator, $item);
         }
         return $accumulator;
+    }
+
+    /**
+     * Normalizes callbacks, closures and invokable objects calls
+     * @param callable $callable
+     * @return callable
+     */
+    private function normalizeAsCallables(callable $callable) {
+        if (is_object($callable)) {
+            return $callable;
+        }
+        return function () use ($callable) {
+            return call_user_func_array($callable, func_get_args());
+        };
     }
 }

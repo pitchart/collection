@@ -25,6 +25,18 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @var callable $callable
+     * @dataProvider callableProvider
+     */
+    public function testCanExecuteCallables(callable $callable) {
+        $reflection = new \ReflectionClass(Collection::class);
+        $method = $reflection->getMethod('normalizeAsCallables');
+        $method->setAccessible(true);
+        $function = $method->invokeArgs(new Collection, [$callable]);
+        $this->assertEquals('2017-01-01', $function('Y-m-d', '2017-01-01')->format('Y-m-d'));
+    }
+
+    /**
      * @param array $items
      * @param int   $numberOfItems
      * @dataProvider countTestProvider
@@ -265,6 +277,16 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             'mapcat' => [[1, 2, 3, 4], 'mapcat', [function ($item) {
                 return Collection::from([$item, $item + 1]);
             }]],
+        ];
+    }
+
+    public function callableProvider() {
+        return [
+            'Function name' => ['date_create_from_format'],
+            'Closure' => [function ($format, $time) { return date_create_from_format($format, $time);}],
+            'Static method string' => ['DateTime::createFromFormat'],
+            'Array with class name and static method' => [['DateTime', 'createFromFormat']],
+            'Array with object and method name' => [[new \DateTime, 'createFromFormat']],
         ];
     }
 
