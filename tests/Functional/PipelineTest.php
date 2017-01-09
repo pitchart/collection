@@ -8,42 +8,43 @@ use Pitchart\Collection\Test\Stub\Model\Character;
 class PipelineTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testIntegerArrayPipeline() 
+    public function testIntegerArrayPipeline()
     {
         $collection = Collection::from([1, 2, 3, 4, 5, 6]);
 
         $pipelineReductionSum = $collection->filter(
             function ($item) {
-                return $item % 2  == 0; 
+                return $item % 2  == 0;
             }
         )
             ->map(
                 function ($item) {
-                    return $item * 2; 
+                    return $item * 2;
                 }
             )
             ->reduce(
                 function ($accumulator, $item) {
-                    return $accumulator + $item; 
-                }, 0
+                    return $accumulator + $item;
+                },
+                0
             );
 
         $this->assertEquals(24, $pipelineReductionSum);
     }
 
-    public function testObjectArrayPipelines() 
+    public function testObjectArrayPipelines()
     {
         $collection = Collection::from($this->loadCharacterStubs());
 
         $emailList = $collection
             ->reject(
                 function (Character $character) {
-                    return (boolean) $character->getEmail() == null; 
+                    return (boolean) $character->getEmail() == null;
                 }
             )
             ->map(
                 function (Character $character) {
-                    return $character->getEmail(); 
+                    return $character->getEmail();
                 }
             );
         $this->assertContains('jay@quick.stop', $emailList);
@@ -63,13 +64,14 @@ class PipelineTest extends \PHPUnit_Framework_TestCase
         $averageAgeAtQuickStop = $peopleAtQuickStop->reduce(
             function ($accumulator, $age) {
                 return $accumulator + $age;
-            }, 0
+            },
+            0
         ) / $peopleAtQuickStop->count();
 
         $this->assertEquals(33, $averageAgeAtQuickStop);
     }
 
-    private function loadCharacterStubs() 
+    private function loadCharacterStubs()
     {
         return [
             new Character('Jay', 'jay@quick.stop', 35),
@@ -83,5 +85,4 @@ class PipelineTest extends \PHPUnit_Framework_TestCase
             new Character('Elias', 'elias@moo.by', 25)
         ];
     }
-
 }

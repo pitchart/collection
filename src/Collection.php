@@ -248,10 +248,12 @@ class Collection extends \ArrayObject
 
     /**
      * Normalizes callbacks, closures and invokable objects calls
+     *
      * @param callable $callable
      * @return callable
      */
-    private function normalizeAsCallables(callable $callable) {
+    private function normalizeAsCallables(callable $callable)
+    {
         if (is_object($callable)) {
             return $callable;
         }
