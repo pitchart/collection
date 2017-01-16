@@ -43,8 +43,9 @@ class Collection extends \ArrayObject
      */
     public function each(callable $callable)
     {
+        $function = $this->normalizeAsCallables($callable);
         foreach ($this->getArrayCopy() as $item) {
-            $this->normalizeAsCallables($callable)($item);
+            $function($item);
         }
     }
 
