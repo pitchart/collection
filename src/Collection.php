@@ -33,7 +33,7 @@ class Collection extends \ArrayObject
      */
     public function values()
     {
-        return $this->getArrayCopy();
+        return array_values($this->getArrayCopy());
     }
 
     /**
