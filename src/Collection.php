@@ -26,14 +26,13 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Alias for getArrayCopy()
+     * Return reindexed items
      *
      * @return array
-     * @see    getArrayCopy
      */
     public function values()
     {
-        return $this->getArrayCopy();
+        return array_values($this->getArrayCopy());
     }
 
     /**
