@@ -50,7 +50,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanIterateItems()
     {
         $collection = Collection::from([1, 2, 3, 4]);
-        $mock = $this->getMockBuilder(stdClass::class)
+        $mock = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['test'])
             ->getMock();
 
