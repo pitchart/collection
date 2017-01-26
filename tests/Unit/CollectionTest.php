@@ -209,6 +209,16 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([2, 3], $intersection->values());
     }
 
+    public function testEveryReturnsTrueIfAllItemsSatisfyCondition() {
+        $collection = Collection::from([2,4,6,8,10]);
+        $this->assertTrue($collection->every(function ($item) { return $item % 2 == 0;}));
+    }
+
+    public function testEveryReturnsFalseIfAtLeastOneItemDoesntSatisfyCondition() {
+        $collection = Collection::from([2,3,6,8,10]);
+        $this->assertFalse($collection->every(function ($item) { return $item % 2 == 0;}));
+    }
+
     public function testCanFlattenElementsAfterAMapping()
     {
         $flatMap = Collection::from([1, 2, 3, 4])->flatMap(

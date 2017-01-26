@@ -267,6 +267,23 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Returns true if every item satisfy the callable condition
+     *
+     * @param callable $callable
+     */
+    public function every(callable $callable) {
+        $satisfies = true;
+        $callable = $this->normalizeAsCallables($callable);
+        foreach ($this->values() as $item) {
+            if (!$callable($item)) {
+                $satisfies = false;
+                break;
+            }
+        }
+        return $satisfies;
+    }
+
+    /**
      * Normalizes callbacks, closures and invokable objects calls
      *
      * @param callable $callable
