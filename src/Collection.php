@@ -26,10 +26,9 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Alias for getArrayCopy()
+     * Return reindexed items
      *
      * @return array
-     * @see    getArrayCopy
      */
     public function values()
     {
@@ -232,6 +231,26 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Get all items but the first
+     *
+     * @return static
+     */
+    public function tail() {
+        return new static(array_slice($this->values(), 1));
+    }
+
+
+    /**
+     * Get the first item
+     *
+     * @return mixed
+     */
+    public function head() {
+        $values = $this->values();
+        return array_shift($values);
+    }
+
+    /**
      * @param callable $callable
      * @param mixed    $initial
      * @return mixed
@@ -245,6 +264,40 @@ class Collection extends \ArrayObject
             $accumulator = $function($accumulator, $item);
         }
         return $accumulator;
+    }
+
+    /**
+     * Returns true if every item satisfy the callable condition
+     *
+     * @param callable $callable
+     */
+    public function every(callable $callable) {
+        $satisfies = true;
+        $callable = $this->normalizeAsCallables($callable);
+        foreach ($this->values() as $item) {
+            if (!$callable($item)) {
+                $satisfies = false;
+                break;
+            }
+        }
+        return $satisfies;
+    }
+
+    /**
+     * Returns true if at least one item satisfy the callable condition
+     *
+     * @param callable $callable
+     */
+    public function some(callable $callable) {
+        $satisfies = false;
+        $callable = $this->normalizeAsCallables($callable);
+        foreach ($this->values() as $item) {
+            if ($callable($item)) {
+                $satisfies = true;
+                break;
+            }
+        }
+        return $satisfies;
     }
 
     /**
