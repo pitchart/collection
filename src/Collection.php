@@ -267,7 +267,7 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Returns true if every item satisfy the callable condition
+     * Returns true if all items satisfy the callable condition
      *
      * @param callable $callable
      */
@@ -284,7 +284,7 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Returns true if at least one item satisfy the callable condition
+     * Returns true if at least one item satisfies the callable condition
      *
      * @param callable $callable
      */
@@ -298,6 +298,15 @@ class Collection extends \ArrayObject
             }
         }
         return $satisfies;
+    }
+
+    /**
+     * Returns true no item satisfies the callable condition
+     *
+     * @param callable $callable
+     */
+    public function none(callable $callable) {
+        return !$this->some($callable);
     }
 
     /**
