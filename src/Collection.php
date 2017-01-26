@@ -231,6 +231,26 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Get all items but the first
+     *
+     * @return static
+     */
+    public function tail() {
+        return new static(array_slice($this->values(), 1));
+    }
+
+
+    /**
+     * Get the first item
+     *
+     * @return mixed
+     */
+    public function head() {
+        $values = $this->values();
+        return array_shift($values);
+    }
+
+    /**
      * @param callable $callable
      * @param mixed    $initial
      * @return mixed

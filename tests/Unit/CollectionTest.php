@@ -225,6 +225,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
     }
 
+    public function testCanExtractTheFirstElement() {
+        $this->assertEquals(1, Collection::from([1,2,3])->head());
+    }
+
+    public function testCanExtractAllElementsButFirst() {
+        $this->assertEquals([2,3], Collection::from([1,2,3])->tail()->values());
+    }
+
     /**
      * Test that transformation methods keeps the collection immutable
      *
