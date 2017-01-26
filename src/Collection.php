@@ -284,6 +284,23 @@ class Collection extends \ArrayObject
     }
 
     /**
+     * Returns true if at least one item satisfy the callable condition
+     *
+     * @param callable $callable
+     */
+    public function some(callable $callable) {
+        $satisfies = false;
+        $callable = $this->normalizeAsCallables($callable);
+        foreach ($this->values() as $item) {
+            if ($callable($item)) {
+                $satisfies = true;
+                break;
+            }
+        }
+        return $satisfies;
+    }
+
+    /**
      * Normalizes callbacks, closures and invokable objects calls
      *
      * @param callable $callable
