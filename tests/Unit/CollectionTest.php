@@ -209,39 +209,60 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([2, 3], $intersection->values());
     }
 
-    public function testEveryReturnsTrueIfAllItemsSatisfyCondition() {
+    public function testEveryReturnsTrueIfAllItemsSatisfyCondition()
+    {
         $collection = Collection::from([2,4,6,8,10]);
-        $this->assertTrue($collection->every(function ($item) { return $item % 2 == 0;}));
+        $this->assertTrue($collection->every(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
-    public function testEveryReturnsFalseIfAtLeastOneItemDoesntSatisfyCondition() {
+    public function testEveryReturnsFalseIfAtLeastOneItemDoesntSatisfyCondition()
+    {
         $collection = Collection::from([2,3,6,8,10]);
-        $this->assertFalse($collection->every(function ($item) { return $item % 2 == 0;}));
+        $this->assertFalse($collection->every(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
-    public function testSomeReturnsTrueIfAllItemsSatisfyCondition() {
+    public function testSomeReturnsTrueIfAllItemsSatisfyCondition()
+    {
         $collection = Collection::from([2,4,6,8,10]);
-        $this->assertTrue($collection->some(function ($item) { return $item % 2 == 0;}));
+        $this->assertTrue($collection->some(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
-    public function testSomeReturnsTrueIfAtLeastOneItemSatisfiesCondition() {
+    public function testSomeReturnsTrueIfAtLeastOneItemSatisfiesCondition()
+    {
         $collection = Collection::from([2,3,6,8,10]);
-        $this->assertTrue($collection->some(function ($item) { return $item % 2 == 0;}));
+        $this->assertTrue($collection->some(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
-    public function testSomeReturnsFalseIfAllItemsDontSatisfyCondition() {
+    public function testSomeReturnsFalseIfAllItemsDontSatisfyCondition()
+    {
         $collection = Collection::from([1,3,5,7,9]);
-        $this->assertFalse($collection->some(function ($item) { return $item % 2 == 0;}));
+        $this->assertFalse($collection->some(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
-    public function testNoneReturnsFalseIfAtLeastOneItemSatisfiesCondition() {
+    public function testNoneReturnsFalseIfAtLeastOneItemSatisfiesCondition()
+    {
         $collection = Collection::from([1,3,6,7,9]);
-        $this->assertFalse($collection->none(function ($item) { return $item % 2 == 0;}));
+        $this->assertFalse($collection->none(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
-    public function testNoneReturnsTrueIfNoItemSatisfiesCondition() {
+    public function testNoneReturnsTrueIfNoItemSatisfiesCondition()
+    {
         $collection = Collection::from([1,3,5,7,9]);
-        $this->assertTrue($collection->none(function ($item) { return $item % 2 == 0;}));
+        $this->assertTrue($collection->none(function ($item) {
+            return $item % 2 == 0;
+        }));
     }
 
     public function testCanFlattenElementsAfterAMapping()
@@ -260,11 +281,13 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
     }
 
-    public function testCanExtractTheFirstElement() {
+    public function testCanExtractTheFirstElement()
+    {
         $this->assertEquals(1, Collection::from([1,2,3])->head());
     }
 
-    public function testCanExtractAllElementsButFirst() {
+    public function testCanExtractAllElementsButFirst()
+    {
         $this->assertEquals([2,3], Collection::from([1,2,3])->tail()->values());
     }
 

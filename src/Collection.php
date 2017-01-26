@@ -235,7 +235,8 @@ class Collection extends \ArrayObject
      *
      * @return static
      */
-    public function tail() {
+    public function tail()
+    {
         return new static(array_slice($this->values(), 1));
     }
 
@@ -245,7 +246,8 @@ class Collection extends \ArrayObject
      *
      * @return mixed
      */
-    public function head() {
+    public function head()
+    {
         $values = $this->values();
         return array_shift($values);
     }
@@ -271,7 +273,8 @@ class Collection extends \ArrayObject
      *
      * @param callable $callable
      */
-    public function every(callable $callable) {
+    public function every(callable $callable)
+    {
         $satisfies = true;
         $callable = $this->normalizeAsCallables($callable);
         foreach ($this->values() as $item) {
@@ -288,7 +291,8 @@ class Collection extends \ArrayObject
      *
      * @param callable $callable
      */
-    public function some(callable $callable) {
+    public function some(callable $callable)
+    {
         $satisfies = false;
         $callable = $this->normalizeAsCallables($callable);
         foreach ($this->values() as $item) {
@@ -305,7 +309,8 @@ class Collection extends \ArrayObject
      *
      * @param callable $callable
      */
-    public function none(callable $callable) {
+    public function none(callable $callable)
+    {
         return !$this->some($callable);
     }
 
