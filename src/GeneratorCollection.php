@@ -81,6 +81,23 @@ class GeneratorCollection extends \IteratorIterator
     }
 
     /**
+     * @param Collection $collection
+     * @return static
+     */
+    public function merge(self $collection)
+    {
+        $merging = function (\Iterator $iterator1, \Iterator $iterator2) {
+            foreach ($iterator1 as $item) {
+                yield $item;
+            }
+            foreach ($iterator2 as $item) {
+                yield $item;
+            }
+        };
+        return new static($merging($this->getInnerIterator(), $collection));
+    }
+
+    /**
      * @param callable $callable
      * @param mixed    $initial
      * @return mixed

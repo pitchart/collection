@@ -32,6 +32,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $reflection = new \ReflectionClass(Collection::class);
         $method = $reflection->getMethod('normalizeAsCallables');
         $method->setAccessible(true);
+        /** @var \Closure $function */
         $function = $method->invokeArgs(new Collection, [$callable]);
         $this->assertEquals('2017-01-01', $function('Y-m-d', '2017-01-01')->format('Y-m-d'));
     }

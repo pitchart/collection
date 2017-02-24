@@ -67,6 +67,13 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $collection->reject($callback)->toArray());
     }
 
+    public function testCanMergeCollections()
+    {
+        $collection = new GeneratorCollection(new \ArrayIterator([1, 2, 3]));
+        $merged = $collection->merge(new GeneratorCollection(new \ArrayIterator([4, 5, 6])));
+        $this->assertEquals([1, 2, 3, 4, 5, 6], $merged->toArray());
+    }
+
     /**
      * @param array    $items
      * @param callable $reducer
