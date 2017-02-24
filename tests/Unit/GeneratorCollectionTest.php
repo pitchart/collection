@@ -44,7 +44,7 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanMapDatas(array $items, callable $callback, array $expected)
     {
-        $this->assertEquals($expected, GeneratorCollection::from(new \ArrayIterator($items))->map($callback)->toArray());
+        $this->assertEquals($expected, GeneratorCollection::from($items)->map($callback)->toArray());
     }
 
     /**
@@ -72,8 +72,7 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testCanTransformIntoCollection() {
-        $collection = new GeneratorCollection(new \ArrayIterator([0,1,2,3,4,5,6]));
-        $persisted = $collection->persist();
+        $persisted = GeneratorCollection::from([0,1,2,3,4,5,6])->persist();
         $this->assertInstanceOf(Collection::class, $persisted);
         $this->assertEquals([0,1,2,3,4,5,6], $persisted->values());
     }
@@ -86,15 +85,12 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanBeRejected(array $items, callable $callback, array $expected)
     {
-        $collection = new GeneratorCollection(new \ArrayIterator($items));
-        $this->assertEquals($expected, $collection->reject($callback)->toArray());
+        $this->assertEquals($expected, GeneratorCollection::from($items)->reject($callback)->toArray());
     }
 
     public function testCanMergeCollections()
     {
-        $collection = new GeneratorCollection(new \ArrayIterator([1, 2, 3]));
-        $merged = $collection->merge(new GeneratorCollection(new \ArrayIterator([4, 5, 6])));
-        $this->assertEquals([1, 2, 3, 4, 5, 6], $merged->toArray());
+        $this->assertEquals([1, 2, 3, 4, 5, 6], GeneratorCollection::from([1, 2, 3])->merge(GeneratorCollection::from([4, 5, 6]))->toArray());
     }
 
     /**
