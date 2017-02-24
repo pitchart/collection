@@ -33,9 +33,9 @@ class GeneratorCollection extends \IteratorIterator
     /**
      * @return Collection
      */
-    public function persist()
+    public function persist($class = Collection::class)
     {
-        return new Collection($this->toArray());
+        return new $class($this->toArray());
     }
 
     /**
