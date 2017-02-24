@@ -65,6 +65,23 @@ class GeneratorCollection extends \IteratorIterator
 
     /**
      * @param callable $callable
+     * @return static
+     */
+    public function reject(callable $callable)
+    {
+        //$function = $this->normalizeAsCallables($callable);
+        $rejecting = function ($iterator) use ($callable) {
+            foreach ($iterator as $key => $item) {
+                if (!$callable($item)) {
+                    yield $item;
+                }
+            }
+        };
+        return new static($rejecting($this->getInnerIterator()));
+    }
+
+    /**
+     * @param callable $callable
      * @param mixed    $initial
      * @return mixed
      */

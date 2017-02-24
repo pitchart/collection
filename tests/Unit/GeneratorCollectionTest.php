@@ -57,6 +57,18 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array    $items
+     * @param callable $callback
+     * @param array    $expected
+     * @dataProvider rejectTestProvider
+     */
+    public function testCanBeRejected(array $items, callable $callback, array $expected)
+    {
+        $collection = new GeneratorCollection(new \ArrayIterator($items));
+        $this->assertEquals($expected, $collection->reject($callback)->toArray());
+    }
+
+    /**
+     * @param array    $items
      * @param callable $reducer
      * @param mixed    $initial
      * @param mixed    $expected
@@ -104,6 +116,18 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
             'String reducing' => [['banana', 'apple', 'orange'], function ($accumulator, $item) {
                 return trim($accumulator.', '.$item, ', ');
             }, '', 'banana, apple, orange'],
+        ];
+    }
+
+    public function rejectTestProvider()
+    {
+        return [
+            'Pair filter' => [[1,2,3, 4], function ($item) {
+                return $item % 2 == 0;
+            }, [1, 3]],
+            'String filter' => [['foo', 'bar', 'fizz', 'buzz'], function ($item) {
+                return strpos($item, 'f') !== false;
+            }, ['bar', 'buzz']],
         ];
     }
 
