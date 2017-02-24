@@ -118,6 +118,9 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function mapTestProvider()
     {
         return [
+            'Empty data set' => [[], function ($item) {
+                return $item + 1;
+            }, []],
             'Add 1 mapper' => [[1,2,3], function ($item) {
                 return $item + 1;
             }, [2, 3, 4]],
@@ -133,6 +136,9 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function filterTestProvider()
     {
         return [
+            'Empty data set' => [[], function ($item) {
+                return $item % 2 == 0;
+            }, []],
             'Pair filter' => [[1,2,3, 4], function ($item) {
                 return $item % 2 == 0;
             }, [2, 4]],
@@ -145,6 +151,9 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function reduceTestProvider()
     {
         return [
+            'Empty data set' => [[], function ($accumulator, $item) {
+                return $accumulator + $item;
+            }, 0, 0],
             'Sum reducing' => [[1,2,3,4], function ($accumulator, $item) {
                 return $accumulator + $item;
             }, 0, 10],
@@ -157,6 +166,9 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function rejectTestProvider()
     {
         return [
+            'Empty data set' => [[], function ($item) {
+                return $item % 2 == 0;
+            }, []],
             'Pair filter' => [[1,2,3, 4], function ($item) {
                 return $item % 2 == 0;
             }, [1, 3]],
