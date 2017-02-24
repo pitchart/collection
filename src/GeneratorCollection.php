@@ -4,8 +4,22 @@ namespace Pitchart\Collection;
 
 class GeneratorCollection extends \IteratorIterator
 {
-    public static function from(\Iterator $iterator) {
-        return new static($iterator);
+    public static function from($iterable) {
+        if (is_array($iterable)
+            || $iterable instanceof \IteratorAggregate
+        ) {
+            return new static(new \ArrayIterator($iterable));
+        }
+        if ($iterable instanceof \Iterator) {
+            return new static($iterable);
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf(
+                'Argument 1 must be an instance of Traversable or an array, %s given',
+                is_object($iterable) ? get_class($iterable) : gettype($iterable)
+            )
+        );
     }
 
     /**

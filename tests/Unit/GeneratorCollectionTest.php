@@ -13,6 +13,29 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(GeneratorCollection::class, $collection);
     }
 
+    public function testCanBeBuilded()
+    {
+        $fromArray = GeneratorCollection::from([]);
+        $this->assertInstanceOf(GeneratorCollection::class, $fromArray);
+
+        $fromIterator = GeneratorCollection::from(new \ArrayIterator([]));
+        $this->assertInstanceOf(GeneratorCollection::class, $fromIterator);
+
+        $fromAggregate = GeneratorCollection::from(new \ArrayObject([]));
+        $this->assertInstanceOf(GeneratorCollection::class, $fromAggregate);
+    }
+
+    /**
+     * @param mixed $argument
+     * @param string $type
+     * @dataProvider badArgumentProvider
+     */
+    public function testBuildFromBadArgumentThrowsAnException($argument, $type) {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Argument 1 must be an instance of Traversable or an array, %s given', $type));
+        $collection = GeneratorCollection::from($argument);
+    }
+
     /**
      * @param array    $items
      * @param callable $callback
@@ -83,8 +106,17 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanBeReduced(array $items, callable $reducer, $initial, $expected)
     {
-        $collection = new GeneratorCollection(new \ArrayIterator($items));;
-        $this->assertEquals($expected, $collection->reduce($reducer, $initial));
+        $this->assertEquals($expected, GeneratorCollection::from($items)->reduce($reducer, $initial));
+    }
+
+    public function badArgumentProvider() {
+        return [
+            [null, 'NULL'],
+            [true, 'boolean'],
+            ['toto', 'string'],
+            [15, 'integer'],
+            [new \stdClass(), 'stdClass'],
+        ];
     }
 
     public function mapTestProvider()
