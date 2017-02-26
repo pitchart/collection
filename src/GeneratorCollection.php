@@ -2,8 +2,13 @@
 
 namespace Pitchart\Collection;
 
+use Pitchart\Collection\Mixin\CallableUnifierTrait;
+
 class GeneratorCollection extends \IteratorIterator
 {
+
+    use CallableUnifierTrait;
+
     public static function from($iterable) {
         if (is_array($iterable)
             || $iterable instanceof \IteratorAggregate
@@ -44,9 +49,10 @@ class GeneratorCollection extends \IteratorIterator
      */
     public function map(callable $callable)
     {
-        $mapping = function ($iterator) use ($callable) {
+        $function = $this->normalizeAsCallables($callable);
+        $mapping = function ($iterator) use ($function) {
             foreach ($iterator as $key => $item) {
-                yield $key => $callable($item);
+                yield $key => $function($item);
             }
         };
         return new static($mapping($this->getInnerIterator()));
@@ -58,14 +64,15 @@ class GeneratorCollection extends \IteratorIterator
      */
     public function filter(callable $callable)
     {
-        $filtering = function ($iterator) use ($callable) {
+        $function = $this->normalizeAsCallables($callable);
+        $filter = function ($iterator) use ($function) {
             foreach ($iterator as $key => $item) {
-                if ($callable($item)) {
+                if ($function($item)) {
                     yield $item;
                 }
             }
         };
-        return new static($filtering($this->getInnerIterator()));
+        return new static($filter($this->getInnerIterator()));
     }
 
     /**
@@ -83,15 +90,15 @@ class GeneratorCollection extends \IteratorIterator
      */
     public function reject(callable $callable)
     {
-        //$function = $this->normalizeAsCallables($callable);
-        $rejecting = function ($iterator) use ($callable) {
+        $function = $this->normalizeAsCallables($callable);
+        $rejection = function ($iterator) use ($function) {
             foreach ($iterator as $key => $item) {
-                if (!$callable($item)) {
+                if (!$function($item)) {
                     yield $item;
                 }
             }
         };
-        return new static($rejecting($this->getInnerIterator()));
+        return new static($rejection($this->getInnerIterator()));
     }
 
     /**
@@ -119,11 +126,12 @@ class GeneratorCollection extends \IteratorIterator
     public function reduce(callable $callable, $initial)
     {
         $accumulator = $initial;
-        //$function = $this->normalizeAsCallables($callable);
+        $function = $this->normalizeAsCallables($callable);
 
         foreach ($this->getInnerIterator() as $item) {
-            $accumulator = $callable($accumulator, $item);
+            $accumulator = $function($accumulator, $item);
         }
+
         return $accumulator;
     }
 
