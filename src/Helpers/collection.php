@@ -7,10 +7,10 @@ use Pitchart\Collection\GeneratorCollection;
 
 function collect($items)
 {
-	return Collection::from($items);
+    return Collection::from($items);
 }
 
 function generator($items)
 {
-	return GeneratorCollection::from($items);
+    return GeneratorCollection::from($items);
 }

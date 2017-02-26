@@ -2,9 +2,9 @@
 
 namespace Pitchart\Collection\Mixin;
 
-trait CallableUnifierTrait 
+trait CallableUnifierTrait
 {
-	/**
+    /**
      * Normalizes callbacks, closures and invokable objects calls
      *
      * @param callable $callable

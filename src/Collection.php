@@ -314,5 +314,4 @@ class Collection extends \ArrayObject implements Checkable
     {
         return !$this->some($callable);
     }
-
 }

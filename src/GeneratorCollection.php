@@ -9,7 +9,8 @@ class GeneratorCollection extends \IteratorIterator
 
     use CallableUnifierTrait;
 
-    public static function from($iterable) {
+    public static function from($iterable)
+    {
         if (is_array($iterable)
             || $iterable instanceof \IteratorAggregate
         ) {
@@ -134,5 +135,4 @@ class GeneratorCollection extends \IteratorIterator
 
         return $accumulator;
     }
-
 }
