@@ -10,17 +10,17 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeInstantiated()
     {
         $collection = new Collection(array());
-        $this->assertInstanceOf(Collection::class, $collection);
-        $this->assertInstanceOf(\Countable::class, $collection);
-        $this->assertInstanceOf(\ArrayAccess::class, $collection);
+        self::assertInstanceOf(Collection::class, $collection);
+        self::assertInstanceOf(\Countable::class, $collection);
+        self::assertInstanceOf(\ArrayAccess::class, $collection);
     }
 
     public function testCanBeBuilded()
     {
         $collection = Collection::from(array());
-        $this->assertInstanceOf(Collection::class, $collection);
-        $this->assertInstanceOf(\Countable::class, $collection);
-        $this->assertInstanceOf(\ArrayAccess::class, $collection);
+        self::assertInstanceOf(Collection::class, $collection);
+        self::assertInstanceOf(\Countable::class, $collection);
+        self::assertInstanceOf(\ArrayAccess::class, $collection);
     }
 
     /**
@@ -34,7 +34,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         /** @var \Closure $function */
         $function = $method->invokeArgs(new Collection, [$callable]);
-        $this->assertEquals('2017-01-01', $function('Y-m-d', '2017-01-01')->format('Y-m-d'));
+        self::assertEquals('2017-01-01', $function('Y-m-d', '2017-01-01')->format('Y-m-d'));
     }
 
     /**
@@ -45,17 +45,17 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanReturnNumberOfItems(array $items, $numberOfItems)
     {
         $collection = new Collection($items);
-        $this->assertEquals($numberOfItems, $collection->count());
+        self::assertEquals($numberOfItems, $collection->count());
     }
 
     public function testCanIterateItems()
     {
         $collection = Collection::from([1, 2, 3, 4]);
-        $mock = $this->getMockBuilder(\stdClass::class)
+        $mock = self::getMockBuilder(\stdClass::class)
             ->setMethods(['test'])
             ->getMock();
 
-        $mock->expects($this->exactly(4))
+        $mock->expects(self::exactly(4))
             ->method('test');
         $function = function ($item) use ($mock) {
             $mock->test($item);
@@ -74,7 +74,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeReduced(array $items, callable $reducer, $initial, $expected)
     {
         $collection = new Collection($items);
-        $this->assertEquals($expected, $collection->reduce($reducer, $initial));
+        self::assertEquals($expected, $collection->reduce($reducer, $initial));
     }
 
     /**
@@ -86,9 +86,9 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeFiltered(array $items, callable $callback, array $expected)
     {
         $collection = new Collection($items);
-        $this->assertEquals($expected, array_values($collection->filter($callback)->toArray()));
+        self::assertEquals($expected, array_values($collection->filter($callback)->toArray()));
         // test the alias
-        $this->assertEquals($expected, array_values($collection->select($callback)->toArray()));
+        self::assertEquals($expected, array_values($collection->select($callback)->toArray()));
     }
 
     /**
@@ -100,7 +100,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeRejected(array $items, callable $callback, array $expected)
     {
         $collection = new Collection($items);
-        $this->assertEquals($expected, array_values($collection->reject($callback)->toArray()));
+        self::assertEquals($expected, array_values($collection->reject($callback)->toArray()));
     }
 
     /**
@@ -111,7 +111,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanMapDatas(array $items, callable $callback, array $expected)
     {
-        $this->assertEquals($expected, Collection::from($items)->map($callback)->toArray());
+        self::assertEquals($expected, Collection::from($items)->map($callback)->toArray());
     }
 
     public function testCanGroupItems()
@@ -134,20 +134,20 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
         // Grouped Collection only contains instances of Collection
         foreach ($grouped as $group) {
-            $this->assertInstanceOf(Collection::class, $group);
+            self::assertInstanceOf(Collection::class, $group);
         }
         // Group by a boolean function returns 2 groups
-        $this->assertEquals(2, $grouped->count());
+        self::assertEquals(2, $grouped->count());
         // Test items distribution
-        $this->assertContains($testItem1, $grouped->offsetGet(1));
-        $this->assertContains($testItem2, $grouped->offsetGet(0));
+        self::assertContains($testItem1, $grouped->offsetGet(1));
+        self::assertContains($testItem2, $grouped->offsetGet(0));
     }
 
     public function testCanMergeCollections()
     {
         $collection = new Collection([1, 2, 3]);
         $merged = $collection->merge(Collection::from([4, 5, 6]));
-        $this->assertEquals([1, 2, 3, 4, 5, 6], $merged->values());
+        self::assertEquals([1, 2, 3, 4, 5, 6], $merged->values());
     }
 
     public function testCanCollapseCollectionOfCollections()
@@ -161,7 +161,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
         $collection = Collection::from($items)->concat();
 
-        $this->assertEquals($expected, $collection->values());
+        self::assertEquals($expected, $collection->values());
     }
 
     public function testCanRemoveDuplicates()
@@ -172,7 +172,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         foreach ($collection->values() as $key => $value) {
             $datas = $collection->values();
             unset($datas[$key]);
-            $this->assertNotContains($value, $datas);
+            self::assertNotContains($value, $datas);
         }
     }
 
@@ -183,37 +183,37 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
                 return ($first == $second ? 0 : ($first < $second ? -1 : 1));
             }
         );
-        $this->assertEquals([1, 2, 3, 4], $sorted->values());
+        self::assertEquals([1, 2, 3, 4], $sorted->values());
     }
 
     public function testCanExtractParts()
     {
         $sliced = Collection::from([1, 2, 3, 4])->slice(1, 2);
-        $this->assertEquals([2, 3], $sliced->values());
+        self::assertEquals([2, 3], $sliced->values());
     }
 
     public function testCanExtratNthFirstItems()
     {
         $firsts = Collection::from([1, 2, 3, 4])->take(3);
-        $this->assertEquals([1, 2, 3], $firsts->values());
+        self::assertEquals([1, 2, 3], $firsts->values());
     }
 
     public function testCanRemoveItemsFromAnotherCollection()
     {
         $difference = Collection::from([1, 2, 3, 4])->difference(new Collection([2, 3]));
-        $this->assertEquals([1, 4], $difference->values());
+        self::assertEquals([1, 4], $difference->values());
     }
 
     public function testCanRetainItemsAlsoInAnotherCollection()
     {
         $intersection = Collection::from([1, 2, 3, 4])->intersection(new Collection([2, 3]));
-        $this->assertEquals([2, 3], $intersection->values());
+        self::assertEquals([2, 3], $intersection->values());
     }
 
     public function testEveryReturnsTrueIfAllItemsSatisfyCondition()
     {
         $collection = Collection::from([2,4,6,8,10]);
-        $this->assertTrue($collection->every(function ($item) {
+        self::assertTrue($collection->every(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -221,7 +221,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testEveryReturnsFalseIfAtLeastOneItemDoesntSatisfyCondition()
     {
         $collection = Collection::from([2,3,6,8,10]);
-        $this->assertFalse($collection->every(function ($item) {
+        self::assertFalse($collection->every(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -229,7 +229,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testSomeReturnsTrueIfAllItemsSatisfyCondition()
     {
         $collection = Collection::from([2,4,6,8,10]);
-        $this->assertTrue($collection->some(function ($item) {
+        self::assertTrue($collection->some(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -237,7 +237,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testSomeReturnsTrueIfAtLeastOneItemSatisfiesCondition()
     {
         $collection = Collection::from([2,3,6,8,10]);
-        $this->assertTrue($collection->some(function ($item) {
+        self::assertTrue($collection->some(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -245,7 +245,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testSomeReturnsFalseIfAllItemsDontSatisfyCondition()
     {
         $collection = Collection::from([1,3,5,7,9]);
-        $this->assertFalse($collection->some(function ($item) {
+        self::assertFalse($collection->some(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -253,7 +253,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testNoneReturnsFalseIfAtLeastOneItemSatisfiesCondition()
     {
         $collection = Collection::from([1,3,6,7,9]);
-        $this->assertFalse($collection->none(function ($item) {
+        self::assertFalse($collection->none(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -261,7 +261,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     public function testNoneReturnsTrueIfNoItemSatisfiesCondition()
     {
         $collection = Collection::from([1,3,5,7,9]);
-        $this->assertTrue($collection->none(function ($item) {
+        self::assertTrue($collection->none(function ($item) {
             return $item % 2 == 0;
         }));
     }
@@ -273,23 +273,23 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
                 return Collection::from([$item, $item + 1]);
             }
         );
-        $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
+        self::assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
         $flatMap = Collection::from([1, 2, 3, 4])->mapcat(
             function ($item) {
                 return Collection::from([$item, $item + 1]);
             }
         );
-        $this->assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
+        self::assertEquals([1, 2, 2, 3, 3, 4, 4, 5], $flatMap->values());
     }
 
     public function testCanExtractTheFirstElement()
     {
-        $this->assertEquals(1, Collection::from([1,2,3])->head());
+        self::assertEquals(1, Collection::from([1,2,3])->head());
     }
 
     public function testCanExtractAllElementsButFirst()
     {
-        $this->assertEquals([2,3], Collection::from([1,2,3])->tail()->values());
+        self::assertEquals([2,3], Collection::from([1,2,3])->tail()->values());
     }
 
     /**
@@ -304,7 +304,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $collection = Collection::from($items);
         call_user_func_array(array($collection, $func), $params);
-        $this->assertEquals($items, $collection->toArray());
+        self::assertEquals($items, $collection->toArray());
     }
 
     public function immutabilityTestProvider()

@@ -10,19 +10,19 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeInstantiated()
     {
         $collection = new GeneratorCollection(new \ArrayIterator(array()));
-        $this->assertInstanceOf(GeneratorCollection::class, $collection);
+        self::assertInstanceOf(GeneratorCollection::class, $collection);
     }
 
     public function testCanBeBuilded()
     {
         $fromArray = GeneratorCollection::from([]);
-        $this->assertInstanceOf(GeneratorCollection::class, $fromArray);
+        self::assertInstanceOf(GeneratorCollection::class, $fromArray);
 
         $fromIterator = GeneratorCollection::from(new \ArrayIterator([]));
-        $this->assertInstanceOf(GeneratorCollection::class, $fromIterator);
+        self::assertInstanceOf(GeneratorCollection::class, $fromIterator);
 
         $fromAggregate = GeneratorCollection::from(new \ArrayObject([]));
-        $this->assertInstanceOf(GeneratorCollection::class, $fromAggregate);
+        self::assertInstanceOf(GeneratorCollection::class, $fromAggregate);
     }
 
     /**
@@ -31,8 +31,8 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      * @dataProvider badArgumentProvider
      */
     public function testBuildFromBadArgumentThrowsAnException($argument, $type) {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Argument 1 must be an instance of Traversable or an array, %s given', $type));
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage(sprintf('Argument 1 must be an instance of Traversable or an array, %s given', $type));
         $collection = GeneratorCollection::from($argument);
     }
 
@@ -44,7 +44,7 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanMapDatas(array $items, callable $callback, array $expected)
     {
-        $this->assertEquals($expected, GeneratorCollection::from($items)->map($callback)->toArray());
+        self::assertEquals($expected, GeneratorCollection::from($items)->map($callback)->toArray());
     }
 
     /**
@@ -56,25 +56,25 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanBeFiltered(array $items, callable $callback, array $expected)
     {
         $collection = new GeneratorCollection(new \ArrayIterator($items));
-        $this->assertEquals($expected, $collection->filter($callback)->toArray());
+        self::assertEquals($expected, $collection->filter($callback)->toArray());
         // test the alias
-        $this->assertEquals($expected, $collection->select($callback)->toArray());
+        self::assertEquals($expected, $collection->select($callback)->toArray());
     }
 
     public function testCanGetValuesAfterMappingOrFiltering() {
         $collection = new GeneratorCollection(new \ArrayIterator([0,1,2,3,4,5,6]));
         $values = $collection->map(function($item) { return $item; })->toArray();
-        $this->assertEquals([0,1,2,3,4,5,6], $values);
+        self::assertEquals([0,1,2,3,4,5,6], $values);
 
         $collection = new GeneratorCollection(new \ArrayIterator([0,1,2,3,4,5,6]));
         $values = $collection->filter(function($item) { return $item % 2 == 0; })->toArray();
-        $this->assertEquals([0,2,4,6], $values);
+        self::assertEquals([0,2,4,6], $values);
     }
 
     public function testCanTransformIntoCollection() {
         $persisted = GeneratorCollection::from([0,1,2,3,4,5,6])->persist();
-        $this->assertInstanceOf(Collection::class, $persisted);
-        $this->assertEquals([0,1,2,3,4,5,6], $persisted->values());
+        self::assertInstanceOf(Collection::class, $persisted);
+        self::assertEquals([0,1,2,3,4,5,6], $persisted->values());
     }
 
     /**
@@ -85,12 +85,12 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanBeRejected(array $items, callable $callback, array $expected)
     {
-        $this->assertEquals($expected, GeneratorCollection::from($items)->reject($callback)->toArray());
+        self::assertEquals($expected, GeneratorCollection::from($items)->reject($callback)->toArray());
     }
 
     public function testCanMergeCollections()
     {
-        $this->assertEquals([1, 2, 3, 4, 5, 6], GeneratorCollection::from([1, 2, 3])->merge(GeneratorCollection::from([4, 5, 6]))->toArray());
+        self::assertEquals([1, 2, 3, 4, 5, 6], GeneratorCollection::from([1, 2, 3])->merge(GeneratorCollection::from([4, 5, 6]))->toArray());
     }
 
     /**
@@ -102,7 +102,7 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanBeReduced(array $items, callable $reducer, $initial, $expected)
     {
-        $this->assertEquals($expected, GeneratorCollection::from($items)->reduce($reducer, $initial));
+        self::assertEquals($expected, GeneratorCollection::from($items)->reduce($reducer, $initial));
     }
 
     public function badArgumentProvider() {
