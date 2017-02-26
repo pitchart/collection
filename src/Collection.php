@@ -173,11 +173,12 @@ class Collection extends \ArrayObject
     /**
      * Group a collection using a \Closure
      */
-    public function groupBy(\Closure $groupBy, $preserveKeys = false)
+    public function groupBy(callable $groupBy, $preserveKeys = false)
     {
+        $function = $this->normalizeAsCallables($groupBy);
         $results = [];
         foreach ($this->values() as $key => $value) {
-            $groupKeys = $groupBy($value, $key);
+            $groupKeys = $function($value, $key);
             if (! is_array($groupKeys)) {
                 $groupKeys = [$groupKeys];
             }
