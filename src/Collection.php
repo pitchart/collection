@@ -279,15 +279,13 @@ class Collection extends \ArrayObject
      */
     public function every(callable $callable)
     {
-        $satisfies = true;
         $callable = $this->normalizeAsCallables($callable);
         foreach ($this->values() as $item) {
             if (!$callable($item)) {
-                $satisfies = false;
-                break;
+                return false;
             }
         }
-        return $satisfies;
+        return true;
     }
 
     /**
@@ -297,15 +295,13 @@ class Collection extends \ArrayObject
      */
     public function some(callable $callable)
     {
-        $satisfies = false;
         $callable = $this->normalizeAsCallables($callable);
         foreach ($this->values() as $item) {
             if ($callable($item)) {
-                $satisfies = true;
-                break;
+                return true;
             }
         }
-        return $satisfies;
+        return false;
     }
 
     /**
