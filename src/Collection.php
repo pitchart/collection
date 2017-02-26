@@ -4,8 +4,9 @@ namespace Pitchart\Collection;
 
 use Pitchart\Collection\Mixin\CallableUnifierTrait;
 
-class Collection extends \ArrayObject
+class Collection extends \ArrayObject implements Checkable
 {
+
     use CallableUnifierTrait;
 
     /**
