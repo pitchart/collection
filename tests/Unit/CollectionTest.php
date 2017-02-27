@@ -36,7 +36,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @dataProvider badArgumentProvider
      */
-    public function testBuildFromBadArgumentThrowsAnException($argument, $type) {
+    public function testBuildFromBadArgumentThrowsAnException($argument, $type)
+    {
         self::expectException(\InvalidArgumentException::class);
         self::expectExceptionMessage(sprintf('Argument 1 must be an instance of Traversable or an array, %s given', $type));
         $collection = Collection::from($argument);
@@ -366,7 +367,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function badArgumentProvider() {
+    public function badArgumentProvider()
+    {
         return [
             [null, 'NULL'],
             [true, 'boolean'],

@@ -32,7 +32,8 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @dataProvider badArgumentProvider
      */
-    public function testBuildFromBadArgumentThrowsAnException($argument, $type) {
+    public function testBuildFromBadArgumentThrowsAnException($argument, $type)
+    {
         self::expectException(\InvalidArgumentException::class);
         self::expectExceptionMessage(sprintf('Argument 1 must be an instance of Traversable or an array, %s given', $type));
         $collection = GeneratorCollection::from($argument);
@@ -63,22 +64,29 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $collection->select($callback)->toArray());
     }
 
-    public function testCanRetrieveValuesAsArray() {
+    public function testCanRetrieveValuesAsArray()
+    {
         $values = GeneratorCollection::from([1, 2, 3])->values();
         self::assertEquals([1, 2, 3], $values);
     }
 
-    public function testCanGetValuesAfterMappingOrFiltering() {
+    public function testCanGetValuesAfterMappingOrFiltering()
+    {
         $collection = new GeneratorCollection(new \ArrayIterator([0,1,2,3,4,5,6]));
-        $values = $collection->map(function($item) { return $item; })->toArray();
+        $values = $collection->map(function ($item) {
+            return $item;
+        })->toArray();
         self::assertEquals([0,1,2,3,4,5,6], $values);
 
         $collection = new GeneratorCollection(new \ArrayIterator([0,1,2,3,4,5,6]));
-        $values = $collection->filter(function($item) { return $item % 2 == 0; })->toArray();
+        $values = $collection->filter(function ($item) {
+            return $item % 2 == 0;
+        })->toArray();
         self::assertEquals([0,2,4,6], $values);
     }
 
-    public function testCanTransformIntoCollection() {
+    public function testCanTransformIntoCollection()
+    {
         $persisted = GeneratorCollection::from([0,1,2,3,4,5,6])->persist();
         self::assertInstanceOf(Collection::class, $persisted);
         self::assertEquals([0,1,2,3,4,5,6], $persisted->values());
@@ -117,7 +125,8 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, GeneratorCollection::from($items)->reduce($reducer, $initial));
     }
 
-    public function badArgumentProvider() {
+    public function badArgumentProvider()
+    {
         return [
             [null, 'NULL'],
             [true, 'boolean'],
@@ -189,5 +198,4 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
             }, ['bar', 'buzz']],
         ];
     }
-
 }
