@@ -39,7 +39,7 @@ test:
 	php vendor/bin/phpunit -v --colors --coverage-text
 
 test-report:
-	php vendor/bin/phpunit -v --colors --coverage-html ./build/tests 
+	php vendor/bin/phpunit -v --colors --coverage-html ./tests/coverage/
 
 .PHONY: test
 
