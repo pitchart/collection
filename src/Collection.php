@@ -180,9 +180,12 @@ class Collection extends \ArrayObject implements Checkable
      * @param Collection $collection
      * @return static
      */
-    public function merge(self $collection)
+    public function merge(...$collections)
     {
-        return new static(array_merge($this->values(), $collection->values()));
+        $values = array_map(function (CollectionInterface $collection) {
+            return $collection->values();
+        }, $collections);
+        return new static(array_merge($this->values(), ...$values));
     }
 
     /**
