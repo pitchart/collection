@@ -4,7 +4,10 @@ namespace Pitchart\Collection;
 
 use Pitchart\Collection\Mixin\CallableUnifierTrait;
 
-class Collection extends \ArrayObject implements Checkable
+/**
+ * @author Julien VITTE <vitte.julien@gmail.com>
+ */
+class Collection extends \ArrayObject implements CollectionInterface, Checkable
 {
 
     use CallableUnifierTrait;
@@ -221,7 +224,7 @@ class Collection extends \ArrayObject implements Checkable
     public function concat()
     {
         return $this->reduce(
-            function (Collection $accumulator, $item) {
+            function (CollectionInterface $accumulator, Collection $item) {
                 if ($item instanceof Collection) {
                     $accumulator = $accumulator->merge($item);
                 }
