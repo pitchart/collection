@@ -13,9 +13,23 @@ class Collection extends \ArrayObject implements Checkable
      * @param array $items
      * @return static
      */
-    public static function from(array $items)
+    public static function from($iterable)
     {
-        return new static($items);
+        if ($iterable instanceof \Iterator) {
+            return new static(iterator_to_array($iterable));
+        }
+        if (is_array($iterable)
+            || $iterable instanceof \IteratorAggregate
+        ) {
+            return new static($iterable);
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf(
+                'Argument 1 must be an instance of Traversable or an array, %s given',
+                is_object($iterable) ? get_class($iterable) : gettype($iterable)
+            )
+        );
     }
 
     /**
