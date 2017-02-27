@@ -2,6 +2,7 @@
 
 namespace Pitchart\Collection\Test\Unit;
 
+use Pitchart\Collection\CollectionInterface;
 use Pitchart\Collection\Collection;
 use Pitchart\Collection\GeneratorCollection;
 
@@ -11,6 +12,7 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $collection = new GeneratorCollection(new \ArrayIterator(array()));
         self::assertInstanceOf(GeneratorCollection::class, $collection);
+        self::assertInstanceOf(CollectionInterface::class, $collection);
     }
 
     public function testCanBeBuilded()
@@ -61,6 +63,11 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $collection->select($callback)->toArray());
     }
 
+    public function testCanRetrieveValuesAsArray() {
+        $values = GeneratorCollection::from([1, 2, 3])->values();
+        self::assertEquals([1, 2, 3], $values);
+    }
+
     public function testCanGetValuesAfterMappingOrFiltering() {
         $collection = new GeneratorCollection(new \ArrayIterator([0,1,2,3,4,5,6]));
         $values = $collection->map(function($item) { return $item; })->toArray();
@@ -91,6 +98,11 @@ class GeneratorCollectionTest extends \PHPUnit_Framework_TestCase
     public function testCanMergeCollections()
     {
         self::assertEquals([1, 2, 3, 4, 5, 6], GeneratorCollection::from([1, 2, 3])->merge(GeneratorCollection::from([4, 5, 6]))->toArray());
+    }
+
+    public function testMergeCanHandleAnyIterable()
+    {
+        self::assertEquals([1, 2, 3, 4, 5, 6, 7, 8], GeneratorCollection::from([1, 2])->merge(GeneratorCollection::from([3, 4]), [5, 6], new \ArrayIterator([7, 8]))->toArray());
     }
 
     /**

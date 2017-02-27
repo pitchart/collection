@@ -4,7 +4,12 @@ namespace Pitchart\Collection;
 
 use Pitchart\Collection\Mixin\CallableUnifierTrait;
 
-class GeneratorCollection extends \IteratorIterator
+/**
+ * A collection using generators to perform transformations
+ *
+ * @author Julien VITTE <vitte.julien@gmail.com>
+ */
+class GeneratorCollection extends \IteratorIterator implements CollectionInterface
 {
 
     use CallableUnifierTrait;
@@ -37,6 +42,14 @@ class GeneratorCollection extends \IteratorIterator
     }
 
     /**
+     * @inheritDoc
+     */
+    public function values()
+    {
+        return array_values($this->toArray());
+    }
+
+    /**
      * @return Collection
      */
     public function persist($class = Collection::class)
@@ -45,8 +58,7 @@ class GeneratorCollection extends \IteratorIterator
     }
 
     /**
-     * @param callable $callable
-     * @return static
+     * @inheritDoc
      */
     public function map(callable $callable)
     {
@@ -60,8 +72,7 @@ class GeneratorCollection extends \IteratorIterator
     }
 
     /**
-     * @param callable $callable
-     * @return static
+     * @inheritDoc
      */
     public function filter(callable $callable)
     {
@@ -86,8 +97,7 @@ class GeneratorCollection extends \IteratorIterator
     }
 
     /**
-     * @param callable $callable
-     * @return static
+     * @inheritDoc
      */
     public function reject(callable $callable)
     {
@@ -103,26 +113,22 @@ class GeneratorCollection extends \IteratorIterator
     }
 
     /**
-     * @param Collection $collection
-     * @return static
+     * @inheritDoc
      */
-    public function merge(self $collection)
+    public function merge(...$collections)
     {
-        $merging = function (\Iterator $iterator1, \Iterator $iterator2) {
-            foreach ($iterator1 as $item) {
-                yield $item;
-            }
-            foreach ($iterator2 as $item) {
-                yield $item;
+        $merging = function (...$iterators) {
+            foreach ($iterators as $iterator) {
+                foreach ($iterator as $item) {
+                    yield $item;
+                }
             }
         };
-        return new static($merging($this->getInnerIterator(), $collection));
+        return new static($merging($this->getInnerIterator(), ...$collections));
     }
 
     /**
-     * @param callable $callable
-     * @param mixed    $initial
-     * @return mixed
+     * @inheritDoc
      */
     public function reduce(callable $callable, $initial)
     {
