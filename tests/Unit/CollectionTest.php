@@ -15,12 +15,31 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(\ArrayAccess::class, $collection);
     }
 
-    public function testCanBeBuilded()
+    public function testCanBeBuildedFromArrays()
     {
         $collection = Collection::from(array());
         self::assertInstanceOf(Collection::class, $collection);
         self::assertInstanceOf(\Countable::class, $collection);
         self::assertInstanceOf(\ArrayAccess::class, $collection);
+    }
+
+    public function testCanBeBuildedFromIterators()
+    {
+        $collection = Collection::from(new \ArrayIterator(array()));
+        self::assertInstanceOf(Collection::class, $collection);
+        self::assertInstanceOf(\Countable::class, $collection);
+        self::assertInstanceOf(\ArrayAccess::class, $collection);
+    }
+
+    /**
+     * @param mixed $argument
+     * @param string $type
+     * @dataProvider badArgumentProvider
+     */
+    public function testBuildFromBadArgumentThrowsAnException($argument, $type) {
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage(sprintf('Argument 1 must be an instance of Traversable or an array, %s given', $type));
+        $collection = Collection::from($argument);
     }
 
     /**
@@ -344,6 +363,16 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             'mapcat' => [[1, 2, 3, 4], 'mapcat', [function ($item) {
                 return Collection::from([$item, $item + 1]);
             }]],
+        ];
+    }
+
+    public function badArgumentProvider() {
+        return [
+            [null, 'NULL'],
+            [true, 'boolean'],
+            ['toto', 'string'],
+            [15, 'integer'],
+            [new \stdClass(), 'stdClass'],
         ];
     }
 
