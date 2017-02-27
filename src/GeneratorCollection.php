@@ -14,6 +14,13 @@ class GeneratorCollection extends \IteratorIterator implements CollectionInterfa
 
     use CallableUnifierTrait;
 
+    /**
+     * Builder for GeneratorCollection objects
+     *
+     * @param  iterable $iterable
+     *
+     * @return self
+     */
     public static function from($iterable)
     {
         if (is_array($iterable)
@@ -34,7 +41,7 @@ class GeneratorCollection extends \IteratorIterator implements CollectionInterfa
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function toArray()
     {
@@ -88,7 +95,10 @@ class GeneratorCollection extends \IteratorIterator implements CollectionInterfa
     }
 
     /**
+     * Alias for filter()
+     *
      * @param callable $callable
+     *
      * @return GeneratorCollection
      */
     public function select(callable $callable)

@@ -2,12 +2,18 @@
 
 namespace Pitchart\Collection\Mixin;
 
+/**
+ * A trait to unify callable calls syntaxes
+ *
+ * @author Julien VITTE <vitte.julien@gmail.com>
+ */
 trait CallableUnifierTrait
 {
     /**
      * Normalizes callbacks, closures and invokable objects calls
      *
      * @param callable $callable
+     *
      * @return callable
      */
     private function normalizeAsCallables(callable $callable)
