@@ -8,9 +8,9 @@ build:
     tests:
         override:
             -
-                command: 'php vendor/bin/phpunit'
+                command: 'php vendor/bin/phpunit --coverage-clover=phpunit-coverage.xml'
                 coverage:
-                    file: 'build/logs/coverage.xml'
+                    file: 'phpunit-coverage.xml'
                     format: 'php-clover'
 
 checks:
