@@ -50,7 +50,7 @@ interface CollectionInterface
     /**
      * Merge one or more collections
      *
-     * @param Collection $collection
+     * @param Collection ...$collections
      * @return self
      */
     public function merge(...$collections);

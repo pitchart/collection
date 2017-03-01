@@ -13,7 +13,7 @@ class Collection extends \ArrayObject implements CollectionInterface, Checkable
     use CallableUnifierTrait;
 
     /**
-     * @param array $items
+     * @param iterable $iterable
      * @return static
      */
     public static function from($iterable)
@@ -151,7 +151,6 @@ class Collection extends \ArrayObject implements CollectionInterface, Checkable
     }
 
     /**
-     * @param int  $offset
      * @param int  $length
      * @param bool $preserveKeys
      * @return static
@@ -180,7 +179,7 @@ class Collection extends \ArrayObject implements CollectionInterface, Checkable
     }
 
     /**
-     * @param Collection $collection
+     * @param Collection ...$collections
      * @return static
      */
     public function merge(...$collections)
