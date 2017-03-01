@@ -5,6 +5,8 @@ A simple immutable collection library with a fluent API.
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![Latest Stable Version](https://poser.pugx.org/pitchart/collection/v/stable)](https://packagist.org/packages/pitchart/collection)
 [![Build Status](https://travis-ci.org/pitchart/collection.svg?branch=master)](https://travis-ci.org/pitchart/collection)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pitchart/collection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pitchart/collection/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/pitchart/collection/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/pitchart/collection/?branch=master)
 
 ## Install
 
